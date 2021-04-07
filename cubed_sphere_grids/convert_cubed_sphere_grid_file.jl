@@ -54,25 +54,27 @@ function read_cubed_sphere_face(filepath)
     ## Move data into 2D arrays/fields.
 
     inds(n, N) = UnitRange((n-1) * N^2 + 1, n * N^2)
-    contents(bin, n, N) = reshape(bin[inds(n, N)], N, N)
+    contents(bin, n, N) = permutedims(reshape(bin[inds(n, N)], N, N), (2, 1))
 
     cubed_sphere_variables = (
-         λᶜᶜᵃ = contents(cubed_sphere_face_data,  1, N),
-         φᶜᶜᵃ = contents(cubed_sphere_face_data,  2, N),
-        Δxᶜᶜᵃ = contents(cubed_sphere_face_data,  3, N),
-        Δyᶜᶜᵃ = contents(cubed_sphere_face_data,  4, N),
-        Azᶜᶜᵃ = contents(cubed_sphere_face_data,  5, N),
-         λᶠᶠᵃ = contents(cubed_sphere_face_data,  6, N),
-         φᶠᶠᵃ = contents(cubed_sphere_face_data,  7, N),
-        Δxᶠᶠᵃ = contents(cubed_sphere_face_data,  8, N),
-        Δyᶠᶠᵃ = contents(cubed_sphere_face_data,  9, N),
-        Azᶠᶠᵃ = contents(cubed_sphere_face_data, 10, N),
-        Δxᶠᶜᵃ = contents(cubed_sphere_face_data, 11, N),
-        Δyᶜᶠᵃ = contents(cubed_sphere_face_data, 12, N),
-        Azᶠᶜᵃ = contents(cubed_sphere_face_data, 13, N),
-        Azᶜᶠᵃ = contents(cubed_sphere_face_data, 14, N),
-        Δxᶜᶠᵃ = contents(cubed_sphere_face_data, 15, N),
-        Δyᶠᶜᵃ = contents(cubed_sphere_face_data, 16, N)
+          λᶜᶜᵃ = contents(cubed_sphere_face_data,  1, N),
+          φᶜᶜᵃ = contents(cubed_sphere_face_data,  2, N),
+         Δxᶜᶜᵃ = contents(cubed_sphere_face_data,  3, N),
+         Δyᶜᶜᵃ = contents(cubed_sphere_face_data,  4, N),
+         Azᶜᶜᵃ = contents(cubed_sphere_face_data,  5, N),
+          λᶠᶠᵃ = contents(cubed_sphere_face_data,  6, N),
+          φᶠᶠᵃ = contents(cubed_sphere_face_data,  7, N),
+         Δxᶠᶠᵃ = contents(cubed_sphere_face_data,  8, N),
+         Δyᶠᶠᵃ = contents(cubed_sphere_face_data,  9, N),
+         Azᶠᶠᵃ = contents(cubed_sphere_face_data, 10, N),
+         Δxᶠᶜᵃ = contents(cubed_sphere_face_data, 11, N),
+         Δyᶜᶠᵃ = contents(cubed_sphere_face_data, 12, N),
+         Azᶠᶜᵃ = contents(cubed_sphere_face_data, 13, N),
+         Azᶜᶠᵃ = contents(cubed_sphere_face_data, 14, N),
+         Δxᶜᶠᵃ = contents(cubed_sphere_face_data, 15, N),
+         Δyᶠᶜᵃ = contents(cubed_sphere_face_data, 16, N),
+        cosᶜᶜᵃ = contents(cubed_sphere_face_data, 17, N),
+        sinᶜᶜᵃ = contents(cubed_sphere_face_data, 18, N)
     )
 
     return cubed_sphere_variables
