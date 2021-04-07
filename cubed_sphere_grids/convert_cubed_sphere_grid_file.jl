@@ -54,7 +54,7 @@ function read_cubed_sphere_face(filepath)
     ## Move data into 2D arrays/fields.
 
     inds(n, N) = UnitRange((n-1) * N^2 + 1, n * N^2)
-    contents(bin, n, N) = permutedims(reshape(bin[inds(n, N)], N, N), (2, 1))
+    contents(bin, n, N) = reshape(bin[inds(n, N)], N, N)
 
     cubed_sphere_variables = (
           λᶜᶜᵃ = contents(cubed_sphere_face_data,  1, N),
