@@ -22,10 +22,10 @@ function convert_lat_lon_bin(filepath, Nmonths)
 end
 
 
-files = [("bathymetry_lat_lon_128x60", "bathymetry",  1),
-         ("sst25_128x60x12",                "sst25", 12),
-         ("tau_x_128x60x12",                "tau_x", 12),
-         ("tau_y_128x60x12",                "tau_y", 12)]
+files = [("bathymetry_lat_lon_128x60",       "bathymetry",  1),
+         ("sea_surface_temperature_25_128x60x12", "sst25", 12),
+         ("tau_x_128x60x12",                      "tau_x", 12),
+         ("tau_y_128x60x12",                      "tau_y", 12)]
 
 
 for (filename, varname, Nmonths) in files
