@@ -1,2 +1,3 @@
 # OceananigansArtifacts.jl
-A storage space for binary files and artifacts such as grids and regression data to avoid contaminating the main Oceananigans.jl repository.
+
+Storage for artifacts related to core Oceananigans tests and experiments: regression data, bathymetry, grids, and more.
