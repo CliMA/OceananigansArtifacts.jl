@@ -1,6 +1,8 @@
 using JLD2
 
 function read_big_endian_coordinates(filename, Ninterior = 32, Nhalo = 1)
+    Nhalo > 4 && error("Nhalo must be ≤ 4")
+
     # Open the file in binary read mode
     open(filename, "r") do io
         # Calculate the number of Float64 values in the file
@@ -20,7 +22,7 @@ function read_big_endian_coordinates(filename, Ninterior = 32, Nhalo = 1)
         # Convert from big-endian to native endianness
         native_data = reshape(bswap.(data), (Ninterior + 2 * Nhalo), (Ninterior + 2 * Nhalo))
 
-        return native_data
+        return native_data[1+4-Nhalo:end-4+Nhalo, 1+4-Nhalo:end-4+Nhalo]
     end
 end
 
@@ -30,8 +32,8 @@ end
 
 cubed_sphere_filepath = "cubed_sphere_32_grid_with_4_halos.jld2"
 
-Nx, Ny, Nz = 32, 32, 1
-Hx, Hy = 4, 4
+N = Nx = Ny = 32
+H = Hx = Hy = 4
 
 vars = (:λᶜᶜᵃ, :λᶠᶠᵃ,
         :φᶜᶜᵃ, :φᶠᶠᵃ,
@@ -39,15 +41,22 @@ vars = (:λᶜᶜᵃ, :λᶠᶠᵃ,
         :Δyᶜᶜᵃ, :Δyᶠᶜᵃ, :Δyᶜᶠᵃ, :Δyᶠᶠᵃ,
         :Azᶜᶜᵃ, :Azᶠᶜᵃ, :Azᶜᶠᵃ, :Azᶠᶠᵃ)
 
-for var in vars
+MITgcm_vars = (:xC, :xG,
+               :yC, :yG,
+               :dxF, :dXc, :dXg, :dxV,
+               :dyF, :dYg, :dYc, :dyU,
+               :rAc, :rAw, :rAs, :rAz)
+
+for (var, MITgcm_var) in zip(vars, MITgcm_vars)
     # initialize vars with empty arrays
     eval(:($var = zeros(Nx + 2Hx, Ny + 2Hy, 6)))
 
     # populate every panel of var with data from .bin files
+    MITgcm_var = string(MITgcm_var)
     for panel in 1:6
         expr = quote
             $var[:, :, $panel] =
-                $read_big_endian_coordinates("cubed_sphere_32_grid_with_4_halos/xC.00" * string($panel) * ".001.data", 32, 4)[1+4-Hx:end-4+Hx, 1+4-Hy:end-4+Hy]
+                $read_big_endian_coordinates("cubed_sphere_32_grid_with_4_halos/" * $MITgcm_var * ".00" * string($panel) * ".001.data", $N, $H)
         end
         eval(expr)
     end
