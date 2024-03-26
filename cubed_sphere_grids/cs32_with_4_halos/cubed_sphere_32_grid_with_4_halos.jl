@@ -1,8 +1,6 @@
 using JLD2
 
 function read_big_endian_coordinates(filename, Ninterior = 32, Nhalo = 1)
-    Nhalo > 4 && error("Nhalo must be ≤ 4")
-
     # Open the file in binary read mode
     open(filename, "r") do io
         # Calculate the number of Float64 values in the file
@@ -20,9 +18,7 @@ function read_big_endian_coordinates(filename, Ninterior = 32, Nhalo = 1)
         read!(io, data)
 
         # Convert from big-endian to native endianness
-        native_data = reshape(bswap.(data), (Ninterior + 2 * Nhalo), (Ninterior + 2 * Nhalo))
-
-        return native_data[1+4-Nhalo:end-4+Nhalo, 1+4-Nhalo:end-4+Nhalo]
+        return reshape(bswap.(data), (Ninterior + 2 * Nhalo), (Ninterior + 2 * Nhalo))
     end
 end
 
